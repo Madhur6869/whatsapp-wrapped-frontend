@@ -1,0 +1,32 @@
+@import "../variables.scss";
+
+.navbar{
+    height: 300px;
+    padding: 24px 4px;
+    .main{
+        margin: 0px 48px;
+        width: fit-content;
+        display: flex;
+        gap: 8px;
+        .logo{
+            display: block;
+            margin: auto;
+            height: 40px;
+            width: auto;
+        }
+        .pname{
+            margin: auto;
+            p{  
+                font-size: 24px;
+                font-weight: bold;
+                font-family: $fontFamilyInter;
+                color: #26D466;
+                &:first-child{
+                    color: #FFFFFF;
+                }
+
+            }
+        }
+
+    }
+}
