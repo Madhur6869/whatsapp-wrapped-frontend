@@ -13,7 +13,30 @@ export default function Home() {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setUploadedFile(file);
-    // API call fn
+    
+  };
+
+  const testBackend = async () => {
+    await fetch('http://localhost:8000/test')
+  }
+
+  const backendFileUpload = async () => {
+    const formData = new FormData();
+    formData.append('file', uploadedFile);
+    try {
+      const response = await fetch('http://localhost:8000/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        console.error('File upload failed:', response.statusText);
+      } else {
+        console.log('File uploaded successfully');
+      }
+    } catch (error) {
+      console.error('Error in upload backend API call:', error);
+    }
   };
 
   const handleDragOver = (event) => {
@@ -24,7 +47,7 @@ export default function Home() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     setUploadedFile(file);
-    //API Call fn
+    
   };
 
   return (
@@ -74,7 +97,9 @@ export default function Home() {
             <div className={styles.uploaded}>
               <Image src="/icons/file.svg" width={200} height={200} />
               <p className={styles.filename}>{uploadedFile.name}</p>
-              <button className={styles.submit}> 
+              <button 
+                className={styles.submit}
+                onClick={() => backendFileUpload()}> 
                 Submit
               </button>
               <button
