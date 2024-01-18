@@ -1,6 +1,9 @@
 @import "./variables.scss";
+
 .main {
-    max-height: 100vh;
+  min-height: 100vh; /* Change max-height to min-height */
+  display: flex;
+  flex-direction: column; /* Ensure a column layout */
   .tagline {
     padding: 64px 56px;
     font-family: $fontFamilyHelvetica;
@@ -9,20 +12,61 @@
     color: #ffffff;
   }
   .upload {
+    margin-top: 72px;
+    flex: 1; /* Allow the upload section to fill the available space */
     background-color: #000000;
-    height: 100%;
     padding: 24px;
+    display: flex;
+    flex-direction: column; /* Ensure a column layout */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     .icon {
       display: block;
       margin: 4px auto;
     }
-    .info{
-        color:rgba(255, 255, 255, 0.60);
-        font-family: $fontFamilyHelvetica;
-        font-weight: 400;
-        text-align: center;
+    .info {
+      color: rgba(255, 255, 255, 0.6);
+      font-family: $fontFamilyHelvetica;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+  .uploaded {
+    .filename {
+      color: #FFFFFF99;
+      font-family: $fontFamilyInter;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      text-align: center;
+    }
+    .submit {
+      margin: 36px auto 16px auto;
+      display: block;
+      padding: 12px 24px;
+      border-radius: 10px;
+      border: 1px solid rgba(136, 136, 136, 0.27);
+      background: #242424;
+      box-shadow: 0px 4px 0px 0px #242424;
+
+      font-family: $fontFamilyHelvetica;
+      color: #ffffff;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      &:hover{
+        cursor: pointer;
+      }
+    }
+    .remove {
+      display: block;
+      margin: auto;
+      text-align: center;
+      background-color: transparent;
+      border: none;
+      color: #FFFFFF99;
+      cursor: pointer;
     }
   }
 }
-
-// Upload section styles
