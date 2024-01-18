@@ -54,8 +54,8 @@ export default function Home() {
                 <Image
                   className={styles.icon}
                   src="/icons/upload.svg"
-                  height={128}
-                  width={128}
+                  height={64}
+                  width={64}
                 />
               </label>
               <p className={styles.info}>
