@@ -1,0 +1,46 @@
+@import "../../variables.scss";
+
+.container {
+  width: 400px;
+  height: 100%;
+  margin: 48px;
+  background-color: #141414;
+  padding: 48px;
+  display: flex;
+  flex-direction: column;
+  .header {
+    color: #ffffff;
+    text-align: center;
+    font-family: $fontFamilyHelvetica;
+    line-height: normal;
+    .title {
+      font-size: 24px;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .subtitle {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 15px;
+    }
+  }
+  .content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    font-family: $fontFamilyInter;
+    text-align: center;
+    .name {
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 800;
+    }
+    .count {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+}
