@@ -130,23 +130,28 @@ export default function wrapped({analytics}) {
         onRequestChange={setActiveSlide}
         forwardBtnProps={{
           children: <img
-          style={{ height: '100%', width: '100%' }}
-          src="/icons/back.png"/>,
+          style={{ height: '100%', width: '100%', transform:"rotate(180deg)"}}
+          src="/icons/front.svg"/>,
           style: {
             width: 60,
             height: 60,
             alignSelf: "center",
             background:"black",
-            border:"none"
+            border:"none",
+            cursor:"pointer"
           }
         }}
         backwardBtnProps={{
-          children: "<",
+          children: <img
+          style={{ height: '100%', width: '100%' }}
+          src="/icons/front.svg"/>,
           style: {
             width: 60,
             height: 60,
-            minWidth: 60,
-            alignSelf: "center"
+            alignSelf: "center",
+            background:"black",
+            border:"none",
+            cursor:"pointer"
           }
         }}
         dotsNav={{
@@ -202,6 +207,10 @@ export async function getServerSideProps(params) {
   // Fetch data from external API
   const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/getData/?uid=${params.query.uid}`)
   const analytics = await res.json()
+  if(res.status!=200) 
+  return {
+    notFound: true,
+  }
   // Pass data to the page via props
   return { props: { analytics } }
 }
