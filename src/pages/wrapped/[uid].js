@@ -14,7 +14,19 @@ import AvgResponseTime from "@/components/cards/AvgResponseTime";
 import AvgNumberOfMessages from "@/components/cards/AvgNumberOfMessages";
 import TotalMessages from "@/components/cards/TotalMessages";
 
-function wrapped() {
+export default function wrapped({analytics}) {
+  const {
+    uid,
+    isGroup,
+    most_active_member,
+    emojis,
+    most_active_day,
+    average_response_time,
+    average_msgs_per_day,
+    total_messages,
+    time
+  } = analytics
+  
   const router = useRouter();
   console.log(router?.query?.uid);
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -98,12 +110,16 @@ function wrapped() {
       <Carousel
         containerProps={{
           style: {
-            width: "100%",
+            width: "50%",
+            margin:"16px auto ",
             justifyContent: "space-between",
             userSelect: "none"
+
           }
         }}
-        preventScrollOnSwipe
+        // preventScrollOnSwipe
+        disableSwipeByMouse = {true}
+        infinite={false}
         swipeTreshold={60}
         activeSlideIndex={activeSlide}
         activeSlideProps={{
@@ -113,12 +129,15 @@ function wrapped() {
         }}
         onRequestChange={setActiveSlide}
         forwardBtnProps={{
-          children: ">",
+          children: <img
+          style={{ height: '100%', width: '100%' }}
+          src="/icons/back.png"/>,
           style: {
             width: 60,
             height: 60,
-            minWidth: 60,
-            alignSelf: "center"
+            alignSelf: "center",
+            background:"black",
+            border:"none"
           }
         }}
         backwardBtnProps={{
@@ -134,36 +153,41 @@ function wrapped() {
           show: true,
           itemBtnProps: {
             style: {
-              height: 16,
-              width: 16,
-              borderRadius: "50%",
-              border: 0
+              height: 2,
+              width: 48,
+              borderRadius: "0%",
+              border: 0,
+              margin:"32px 4px",
+              background:"rgb(255,255,255,0.3)"
             }
           },
           activeItemBtnProps: {
             style: {
-              height: 16,
-              width: 16,
-              borderRadius: "50%",
+              height: 2,
+              width: 48,
+              borderRadius: "0%",
               border: 0,
-              background: "black"
+              margin:"32px 4px",
+              background: "#FFFFFF"
             }
           }
         }}
-        itemsToShow={2}
-        speed={400}
+        itemsToShow={1}
+        speed={500}
         centerMode
       >
          <Emojis 
          style={{height:700}}
-         labels={[String.fromCodePoint(128512), "2", "3", "4"]} values={[1, 2, 3, 4]} />
-          <MostActiveMember name="Uncle Roger" count="123,867" />
-          <AvgResponseTime time="3 mins" />
-          <TotalMessages count="2,05,102" />
-          <AvgNumberOfMessages count="600" />
+         labels = {[...emojis.map((obj)=> obj.emoji)]}
+         values = {[...emojis.map((obj)=> obj.count)]}
+        />
+          {isGroup && <MostActiveMember name={most_active_member.name} count={most_active_member.messages} />}
+          <AvgResponseTime time={`${average_response_time} mins`} />
+          <TotalMessages count={total_messages} />
+          <AvgNumberOfMessages count={average_msgs_per_day} />
           <MostActiveDays
-            labels={[`Mon`, "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]}
-            values={[1, 2, 3, 4, 5, 6, 7]}
+            labels={Object.keys(most_active_day)}
+            values={Object.values(most_active_day)}
           />
       </Carousel>
       </div>
@@ -174,4 +198,11 @@ function wrapped() {
   );
 }
 
-export default wrapped;
+export async function getServerSideProps(params) {
+  // Fetch data from external API
+  const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URI}/getData/?uid=${params.query.uid}`)
+  const analytics = await res.json()
+  // Pass data to the page via props
+  return { props: { analytics } }
+}
+

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 import Navbar from "@/components/Navbar";
@@ -8,34 +9,40 @@ import Steps from "@/components/Steps";
 import styles from "@/styles/home.module.scss";
 
 export default function Home() {
+  const router = useRouter()
   const [uploadedFile, setUploadedFile] = useState(null);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     setUploadedFile(file);
-    
   };
-
-  const testBackend = async () => {
-    await fetch('http://localhost:8000/test')
-  }
-
   const backendFileUpload = async () => {
     const formData = new FormData();
-    formData.append('file', uploadedFile);
+    formData.append("file", uploadedFile);
     try {
-      const response = await fetch('http://localhost:8000/api/upload', {
-        method: 'POST',
-        body: formData,
-      });
-  
+      // const response = await fetch('http://localhost:5000/api/upload', {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_URI}/upload`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+      const result = await response.json()
       if (!response.ok) {
-        console.error('File upload failed:', response.statusText);
+        console.error("File upload failed:", response.statusText);
+        
       } else {
-        console.log('File uploaded successfully');
+        console.log("File uploaded successfully");
+        router.push({
+          pathname: "/wrapped/[uid]",
+          query: { uid: result.uid },
+        });
+
+        
       }
     } catch (error) {
-      console.error('Error in upload backend API call:', error);
+      console.error("Error in upload backend API call:", error);
     }
   };
 
@@ -47,7 +54,6 @@ export default function Home() {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
     setUploadedFile(file);
-    
   };
 
   return (
@@ -97,9 +103,10 @@ export default function Home() {
             <div className={styles.uploaded}>
               <Image src="/icons/file.svg" width={200} height={200} />
               <p className={styles.filename}>{uploadedFile.name}</p>
-              <button 
+              <button
                 className={styles.submit}
-                onClick={() => backendFileUpload()}> 
+                onClick={() => backendFileUpload()}
+              >
                 Submit
               </button>
               <button
