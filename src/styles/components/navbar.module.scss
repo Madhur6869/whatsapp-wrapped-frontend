@@ -13,6 +13,9 @@
             margin: auto;
             height: 40px;
             width: auto;
+            &:hover{
+                cursor: pointer;
+            }
         }
         .pname{
             margin: auto;
