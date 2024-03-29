@@ -29,6 +29,19 @@ import styles from "@/styles/components/cards/emojis.module.scss";
 
 function MostActiveDays({ labels, values }) {
 
+const maxNumber = Math.max(...values); // Find the maximum number in the array
+const maxIndex = values.indexOf(maxNumber);
+
+const days = {
+    "Mon": "Monday",
+    "Tue": "Tuesday",
+    "Wed": "Wednesday",
+    "Thu": "Thursday",
+    "Fri": "Friday",
+    "Sat": "Saturday",
+    "Sun": "Sunday",
+  };
+
   const chartOptions = {
     responsive: true,
     maintainAspectRatio: true,
@@ -78,7 +91,7 @@ function MostActiveDays({ labels, values }) {
         options={chartOptions} />
       </div>
       <p className={styles.footer}>
-      Saturday
+      {days[labels[maxIndex]]}
       </p>
     </div>
   );
